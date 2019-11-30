@@ -1,0 +1,57 @@
+.chatbot {
+    position: absolute;
+    right: 50px;
+    bottom: 0px;
+    height: 400px;
+    width: 400px;
+    border: 1px solid black;
+
+    .messages-container{
+        height: 350px;
+        width: 400px;
+        overflow: auto;
+    }
+    .title {
+        text-align: center;
+        margin: 5px;
+    }
+
+    form{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .user-input {
+        width:90%;
+        font-size: 20px;
+        border: none;
+        padding: 2px;
+
+    }
+
+    .submit{
+        width: 9%;
+        height: 28px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .chatbot {
+        position: absolute;
+        right: 10px;
+        bottom: 0px;
+        height: 300px;
+        width: 80%;
+        overflow: auto;
+        border: 1px solid black;
+    
+        .title {
+            text-align: center;
+            margin: 5px;
+        }
+    }
+   
+  }

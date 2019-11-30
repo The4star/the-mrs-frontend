@@ -1,0 +1,25 @@
+.landing {
+    height: 80vh;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+
+    h1 {
+        font-size: 80px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+  
+    .landing {
+        
+
+
+        h1 {
+            font-size: 40px;
+        }
+    }
+}
