@@ -12,7 +12,7 @@ const cookies = new Cookies();
 class Chatbot extends React.Component {
     messagesEnd;
     constructor(props) {
-        super() 
+        super(props) 
         
         this.state = {
             messages: [],
