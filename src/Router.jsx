@@ -6,7 +6,7 @@ import './router.styles.scss'
 // components
 import Landing from './pages/landing/landing.component';
 import About from './pages/about/about.component';
-import Shop from './components/shop/shop.component'
+import Faq from './components/faq/faq.component'
 import Header from './components/header/header.component';
 import Chatbot from './components/chatbot/chatbot.component';
 
@@ -16,7 +16,7 @@ const Router = () => (
         <Switch>
                 <Route exact path='/' component={Landing} />
                 <Route exact path='/about' component={About} />
-                <Route exact path='/shop' component={Shop} />  
+                <Route exact path='/faq' component={Faq} />  
         </Switch>
         <Chatbot />
     </>
