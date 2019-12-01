@@ -11,6 +11,18 @@
             margin: 5px;
         }
 
+        .cards-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .quick-replies-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex: 0 0 auto;
+        }
        
     } 
     

@@ -5,7 +5,7 @@ import './header.styles.scss'
 
 const Header = () => (
     <div className="header">
-        <Link className="mrs" to={'/'} >Melbourne Restaurant Suggester</Link>
+        <Link className="mrs" to={'/'} >The MRS</Link>
         <nav>
             <Link className='link' to={'/shop'} >Shop</Link>
             <Link className='link' to={'/about'} >About</Link>

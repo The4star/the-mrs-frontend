@@ -15,14 +15,21 @@ class Chatbot extends React.Component {
         super() 
         
         this.state = {
-            messages: []
+            messages: [],
+            hidden: false
         }
 
         if (cookies.get('userId') === undefined) {
           cookies.set('userId', uuid(), {path: '/'})  
         }
     }
-
+    resolveAfterXSeconds = (x) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() =>{ 
+             resolve(x);   
+            }, x * 1000)
+        })
+    }
     componentDidMount = async () => {
         await this.eventQuery('Welcome')
     }
@@ -45,7 +52,10 @@ class Chatbot extends React.Component {
         botMessages.map(botMessage => {
             let message = {
                 speaker: 'the MRS',
-                msg: botMessage.text ? botMessage.text.text[0] : null
+                msg: botMessage.text ? botMessage.text.text[0] : null,
+                cards: botMessage.payload && botMessage.payload.fields.cards ? botMessage.payload.fields.cards.listValue.values : null,
+                followUp: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.text.stringValue : null,
+                quickReplies: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.quickReplies.listValue.values : null
             }
             
            return this.setState({messages:[...this.state.messages, message]})
@@ -59,7 +69,10 @@ class Chatbot extends React.Component {
             botMessages.map(botMessage => {
                 let message = {
                     speaker: 'the MRS',
-                    msg: botMessage.text.text[0] ? botMessage.text.text[0] : null
+                    msg: botMessage.text.text[0] ? botMessage.text.text[0] : null,
+                    cards: botMessage.payload && botMessage.payload.fields.cards ? botMessage.payload.fields.cards.listValue.values : null,
+                    followUp: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.text.stringValue : null,
+                    quickReplies: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.quickReplies.listValue.values : null
                 }
             return  this.setState({messages:[...this.state.messages, message]})
             })  
@@ -74,8 +87,10 @@ class Chatbot extends React.Component {
             return stateMessages.map((message, i) => {
                 if (message.msg) {
                    return <Message key={i} speaker={message.speaker} text={message.msg} /> 
+                } else if (message.cards)  {
+                    return <Message key={i} speaker={message.speaker} cards={message.cards} /> 
                 } else {
-                    return <h1> Cards</h1>
+                    return <Message key={i} speaker={message.speaker} text={message.followUp} quickReplies={message.quickReplies} handleQuickReply={this.handleQuickReply}/> 
                 }
                 
             })
@@ -84,36 +99,61 @@ class Chatbot extends React.Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleQuickReply = (text, payload) => {
+        this.textQuery(text);
+    }
+
+    toggleBot = () => {
+        this.setState({hidden: !this.state.hidden})
+    }
+
+    handleSubmit = async(e) => {
         e.preventDefault()
         let submission = e.target.children[0]
-
         this.textQuery(submission.value)
         submission.value = ''
     }
     
     render() {
-
-
-        return(
-            <div className="chatbot">
-                <div className="messages-container">
-                     <h2 className="title">
-                    Melbourne Restaurant Suggester
-                    </h2>
-                    {
-                        this.renderMessages(this.state.messages)
-                    }
-                    <div ref={(el) => this.messagesEnd = el}></div>
+        if (this.state.hidden) {
+            return (
+                <div className="hidden-chatbot">
+                    <div onClick={() => this.toggleBot()} className="main-title">
+                        <h2>
+                            Melbourne Restaurant Suggester
+                        </h2>
+                        <div ref={(el) => this.messagesEnd = el}></div>
+                    </div>
                 </div>
-               
-                <form className="input-form" onSubmit={this.handleSubmit}>
-                  <input type="text" placeholder="ask away!" className="user-input" />  
-                  <button type="submit" className="submit">+</button>
-                </form>
+                    
+            )
+            
+        } else {
+            return(
+                <div className="chatbot">
+                    <div onClick={() => this.toggleBot()} className="main-title">
+                        <h2>
+                            Melbourne Restaurant Suggester
+                        </h2>
+                    </div>
+                        
+                        <div className="messages-container">
+                        
+                        {
+                            this.renderMessages(this.state.messages)
+                        }
+                        <div ref={(el) => this.messagesEnd = el}></div>
+                    </div>
                 
-            </div>    
-        )
+                    <form className="input-form" onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="ask away!" className="user-input" />  
+                    <button type="submit" className="submit">+</button>
+                    </form>
+                    
+                </div>    
+            )
+        }
+        
     }
 
     

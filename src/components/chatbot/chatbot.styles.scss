@@ -1,20 +1,42 @@
+.hidden-chatbot {
+    position: absolute;
+    right: 50px;
+    bottom: 0px;
+    height: 40px;
+    width: 400px;
+    border: 1px solid black;
+    
+    .main-title {
+        text-align: center;
+        padding: 5px;
+        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
+        color: antiquewhite;
+        cursor: pointer;
+    }
+}
+
 .chatbot {
     position: absolute;
     right: 50px;
     bottom: 0px;
-    height: 400px;
+    height: 500px;
     width: 400px;
     border: 1px solid black;
 
     .messages-container{
-        height: 350px;
+        height: 450px;
         width: 400px;
         overflow: auto;
     }
-    .title {
+
+    .main-title {
         text-align: center;
-        margin: 5px;
+        padding: 5px;
+        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
+        color: antiquewhite;
+        cursor: pointer;
     }
+    
 
     form{
         position: absolute;
@@ -29,29 +51,31 @@
         font-size: 20px;
         border: none;
         padding: 2px;
-
     }
 
     .submit{
         width: 9%;
         height: 28px;
+        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
+        color: antiquewhite;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .chatbot {
-        position: absolute;
+        width: 300px;
         right: 10px;
-        bottom: 0px;
-        height: 300px;
-        width: 80%;
-        overflow: auto;
-        border: 1px solid black;
-    
-        .title {
-            text-align: center;
-            margin: 5px;
+
+        .messages-container{
+            width: 300px;
+            height: 420px;
         }
+    }
+
+    .hidden-chatbot {
+        right: 10px;  
+        width: 300px;
+        height: 65px;
     }
    
   }
