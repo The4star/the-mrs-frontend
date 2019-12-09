@@ -123,7 +123,7 @@ class Chatbot extends React.Component {
             return (
                 <div className="hidden-chatbot" onClick={() => this.toggleBot()} >
                     <div className="logo-only">
-                        <img src={logo} alt="logo"/>
+                        <img className="logo-hider" src={logo} alt="logo"/>
                         <div ref={(el) => this.messagesEnd = el}></div>
                     </div>
                 </div>     

@@ -1,3 +1,5 @@
+@import "../../style-variables.scss";
+
 .hidden-chatbot {
     position: absolute;
     right: 50px;
@@ -9,8 +11,14 @@
     cursor: pointer;
     overflow: hidden;
     
-    img {
-        vertical-align: bottom
+    .logo-hider {
+        vertical-align: bottom;
+        transition: .5s
+    }
+
+    .logo-hider:hover {
+        transform: scale(1.1);
+        transition: .5s
     }
 }
 
@@ -89,7 +97,7 @@
         background: white;
         border: none;
         border-radius: 0 0 10px;
-        color: rgba(208, 37, 37, 0.8);
+        color: $submit-button-color;
         cursor: pointer;
     }
 }
