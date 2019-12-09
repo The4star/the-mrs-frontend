@@ -35,7 +35,7 @@ class Chatbot extends React.Component {
         })
     }
     componentDidMount = async () => {
-        await this.eventQuery('Welcome')
+        await this.eventQuery('WelcomeIntent')
     }
 
     componentDidUpdate = () => {
