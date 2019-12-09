@@ -10,7 +10,7 @@ const Message = ({speaker, text, cards, quickReplies, handleQuickReply}) => (
     <div className="wrapper">
         {
             speaker === 'the MRS' &&
-            <div className="message-container bot">
+            <div className="message-container-bot">
                 <div className="speaker">
                    <h3>{speaker}</h3> 
                 </div>
@@ -61,7 +61,7 @@ const Message = ({speaker, text, cards, quickReplies, handleQuickReply}) => (
         }
         {
             speaker === 'me' &&
-            <div className="message-container user">
+            <div className="message-container-user">
                 <div className="speaker">
                    <h3>{speaker}</h3> 
                 </div>

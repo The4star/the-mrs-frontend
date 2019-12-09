@@ -1,45 +1,73 @@
 .hidden-chatbot {
-    z-index: 2;
     position: absolute;
     right: 50px;
-    bottom: 0px;
-    height: 40px;
-    width: 400px;
-    border: 1px solid black;
+    bottom: 30px;
+    border-radius: 100px;
+    height: 100px;
+    width: 100px;
+    box-shadow: 3px 3px 5px black;
+    cursor: pointer;
+    overflow: hidden;
     
-    .main-title {
-        text-align: center;
-        padding: 5px;
-        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
-        color: antiquewhite;
-        cursor: pointer;
+    img {
+        vertical-align: bottom
     }
 }
 
 .chatbot {
-    z-index: 2;
     position: absolute;
     right: 50px;
-    bottom: 0px;
-    height: 500px;
-    width: 400px;
-    border: 1px solid black;
+    bottom: 30px;
+    height: 650px;
+    width: 500px;
+    box-shadow: 2px 2px 5px black;
+    border-radius: 10px;
+    background-color: white;
+    // -webkit-animation: grow 1s ease;
+    // animation: grow 1s ease;
 
     .messages-container{
-        height: 450px;
-        width: 400px;
+        height: 500px;
+        width: 500px;
         overflow: auto;
     }
 
     .main-title {
-        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        margin: 10px;
         padding: 5px;
-        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
-        color: antiquewhite;
-        cursor: pointer;
+        color: #ACA4A4;
+        font-size: 20px;
+
+        .logowrapper {
+            border-radius: 100px;
+            height: 100px;
+            width: 100px;
+            box-shadow: 3px 3px 5px black;
+            overflow: hidden;
+    
+            img {
+                vertical-align: bottom
+            }
+        }
+
+        .text {
+            margin: 10px;
+        }
+
+        .close-button {
+            cursor: pointer;
+            line-height: 0;
+            display: flex;
+
+            &:hover {
+                color: black;
+                transition: .5s;
+            }
+        }
     }
     
-
     form{
         position: absolute;
         bottom: 0px;
@@ -58,26 +86,37 @@
     .submit{
         width: 9%;
         height: 28px;
-        background: linear-gradient(180deg, rgba(208, 37, 37, 0.8) 0%, rgba(202, 29, 29, 0.8) 100%);
-        color: antiquewhite;
+        background: white;
+        border: none;
+        border-radius: 0 0 10px;
+        color: rgba(208, 37, 37, 0.8);
+        cursor: pointer;
     }
+}
+
+@keyframes grow {
+    0%   { height: 10%; width: 10%; position: absolute;}
+    100% { height: 650px; width: 500px; position: absolute;}
 }
 
 @media only screen and (max-width: 600px) {
     .chatbot {
-        width: 300px;
+        width: 95%;
         right: 10px;
 
         .messages-container{
-            width: 300px;
-            height: 420px;
+            width: 100%;
+            height: 80%;
         }
     }
 
     .hidden-chatbot {
-        right: 10px;  
-        width: 300px;
-        height: 65px;
+        right: 10px;
+    }
+
+    @keyframes grow {
+        0%   { height: 10%; width: 10%;}
+        100% { height: 650px; width: 95%; }
     }
    
   }

@@ -5,7 +5,11 @@ import {v4 as uuid} from 'uuid';
 // components
 import Message from '../message/message.component'
 
+// sass
 import './chatbot.styles.scss'
+
+// chatbot logo
+import logo from '../../img/logo.jpg'
 
 const cookies = new Cookies();
 
@@ -16,7 +20,7 @@ class Chatbot extends React.Component {
         
         this.state = {
             messages: [],
-            hidden: false
+            hidden: true
         }
 
         if (cookies.get('userId') === undefined) {
@@ -117,28 +121,30 @@ class Chatbot extends React.Component {
     render() {
         if (this.state.hidden) {
             return (
-                <div className="hidden-chatbot">
-                    <div onClick={() => this.toggleBot()} className="main-title">
-                        <h2>
-                            Melbourne Restaurant Suggester
-                        </h2>
+                <div className="hidden-chatbot" onClick={() => this.toggleBot()} >
+                    <div className="logo-only">
+                        <img src={logo} alt="logo"/>
                         <div ref={(el) => this.messagesEnd = el}></div>
                     </div>
-                </div>
-                    
+                </div>     
             )
             
         } else {
             return(
                 <div className="chatbot">
-                    <div onClick={() => this.toggleBot()} className="main-title">
-                        <h2>
-                            Melbourne Restaurant Suggester
-                        </h2>
+                    <div className="main-title">
+                        <div className="logowrapper">
+                          <img src={logo} alt="logo"/>  
+                        </div>
+                        <div className="text">
+                            <p className="close-button" onClick={() => this.toggleBot()}>
+                                Close
+                            </p>  
+                        </div>
+                        
                     </div>
                         
                         <div className="messages-container">
-                        
                         {
                             this.renderMessages(this.state.messages)
                         }
@@ -147,7 +153,7 @@ class Chatbot extends React.Component {
                 
                     <form className="input-form" onSubmit={this.handleSubmit}>
                     <input type="text" placeholder="ask away!" className="user-input" />  
-                    <button type="submit" className="submit">+</button>
+                    <button type="submit" className="submit"><i className="material-icons">&#xe163;</i></button>
                     </form>
                     
                 </div>    
