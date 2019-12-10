@@ -167,9 +167,7 @@ class Chatbot extends React.Component {
                                 Close
                             </p>  
                         </div>
-                        
                     </div>
-                        
                         <div className="messages-container">
                         {
                             this.renderMessages(this.state.messages)
