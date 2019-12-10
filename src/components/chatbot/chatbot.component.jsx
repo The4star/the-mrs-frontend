@@ -51,35 +51,56 @@ class Chatbot extends React.Component {
         this.setState({messages: [...this.state.messages, message]})
 
         const res = await axios.post('https://the-mrs.herokuapp.com/api/df_text_query', {text, userId: cookies.get('userId')})
-        const botMessages = res.data.fulfillmentMessages 
-        
-        botMessages.map(botMessage => {
+        const allMessages = [];
+        const botMessages = res.data.fulfillmentMessages; 
+        const payloads = res.data.webhookPayload;
+        console.log(payloads);
+        if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
+                let message = {
+                    speaker: 'the MRS',
+                    msg:botMessages[0].text.text[0]
+                }
+                allMessages.push(message)
+        }
+        if (payloads && payloads.fields && payloads.fields.cards) {
             let message = {
                 speaker: 'the MRS',
-                msg: botMessage.text ? botMessage.text.text[0] : null,
-                cards: botMessage.payload && botMessage.payload.fields.cards ? botMessage.payload.fields.cards.listValue.values : null,
-                followUp: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.text.stringValue : null,
-                quickReplies: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.quickReplies.listValue.values : null
+                cards: payloads.fields.cards.listValue.values
             }
-            
-           return this.setState({messages:[...this.state.messages, message]})
+            allMessages.push(message)
+        }
+        
+        allMessages.map(message => {
+            return this.setState({messages: [...this.state.messages, message]})
         })
+        
     }
 
     eventQuery = async (event) => {
         try {
             const res = await axios.post('https://the-mrs.herokuapp.com/api/df_event_query', {event, userId: cookies.get('userId')})
-            const botMessages = res.data.fulfillmentMessages
-            botMessages.map(botMessage => {
+            const allMessages = []
+            const botMessages = res.data.fulfillmentMessages 
+            const payloads = res.data.webhookPayload
+            console.log(payloads)
+            if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
+                    let message = {
+                        speaker: 'the MRS',
+                        msg:botMessages[0].text.text[0]
+                    }
+                    allMessages.push(message)
+            }
+            if (payloads && payloads.fields && payloads.fields.cards) {
                 let message = {
                     speaker: 'the MRS',
-                    msg: botMessage.text.text[0] ? botMessage.text.text[0] : null,
-                    cards: botMessage.payload && botMessage.payload.fields.cards ? botMessage.payload.fields.cards.listValue.values : null,
-                    followUp: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.text.stringValue : null,
-                    quickReplies: botMessage.payload && botMessage.payload.fields.quickReplies ? botMessage.payload.fields.quickReplies.listValue.values : null
+                    cards: payloads.fields.cards.listValue.values
                 }
-            return  this.setState({messages:[...this.state.messages, message]})
-            })  
+                allMessages.push(message)
+            }
+            
+            allMessages.map(message => {
+                return this.setState({messages: [...this.state.messages, message]})
+            })
         } catch (error) {
             console.log(error)
         }
@@ -92,7 +113,7 @@ class Chatbot extends React.Component {
                 if (message.msg) {
                    return <Message key={i} speaker={message.speaker} text={message.msg} /> 
                 } else if (message.cards)  {
-                    return <Message key={i} speaker={message.speaker} cards={message.cards} /> 
+                    return <Message key={i} speaker={message.speaker} cards={message.cards} cardStyle/> 
                 } else {
                     return <Message key={i} speaker={message.speaker} text={message.followUp} quickReplies={message.quickReplies} handleQuickReply={this.handleQuickReply}/> 
                 }
@@ -114,8 +135,13 @@ class Chatbot extends React.Component {
     handleSubmit = async(e) => {
         e.preventDefault()
         let submission = e.target.children[0]
-        this.textQuery(submission.value)
-        submission.value = ''
+        if (submission.value !== '') {
+           this.textQuery(submission.value)
+            submission.value = '' 
+        } else {
+            return
+        }
+        
     }
     
     render() {
@@ -152,7 +178,7 @@ class Chatbot extends React.Component {
                     </div>
                 
                     <form className="input-form" onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="ask away!" className="user-input" />  
+                    <input type="text" placeholder="Type a message..." className="user-input" />  
                     <button type="submit" className="submit"><i className="material-icons">&#xe163;</i></button>
                     </form>
                     

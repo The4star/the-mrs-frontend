@@ -6,11 +6,11 @@ import './message.styles.scss'
 import Card from '../chatbot/card/card.component';
 import QuickReply from '../chatbot/quick-reply/quick-reply.component';
 
-const Message = ({speaker, text, cards, quickReplies, handleQuickReply}) => (
+const Message = ({speaker, text, cards, quickReplies, handleQuickReply, cardStyle}) => (
+
     <div className="wrapper">
-        {
-            speaker === 'the MRS' &&
-            <div className="message-container-bot">
+          {  speaker === 'the MRS' &&
+            <div className={ cardStyle ? "message-container-bot-cards" : "message-container-bot"}>
                 <div className="speaker">
                    <h3>{speaker}</h3> 
                 </div>

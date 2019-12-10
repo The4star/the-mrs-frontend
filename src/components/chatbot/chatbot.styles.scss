@@ -35,7 +35,7 @@
     // animation: grow 1s ease;
 
     .messages-container{
-        height: 500px;
+        height: 470px;
         width: 500px;
         overflow: auto;
     }
@@ -82,22 +82,25 @@
         width: 100%;
         display: flex;
         align-items: center;
+        border-top: 1px solid #ACA4A4;
     }
 
     .user-input {
         width:90%;
+        height:40px;
         font-size: 20px;
         border: none;
-        padding: 2px;
+        padding: 5px;
+        background-color: #ebf1f1;
     }
 
     .submit{
         width: 9%;
-        height: 28px;
-        background: white;
+        height: 50px;
+        background: $submit-button-color;
         border: none;
         border-radius: 0 0 10px;
-        color: $submit-button-color;
+        color: $submit-icon-color;
         cursor: pointer;
     }
 }
@@ -114,7 +117,7 @@
 
         .messages-container{
             width: 100%;
-            height: 80%;
+            height: 75%;
         }
     }
 
