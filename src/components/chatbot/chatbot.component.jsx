@@ -2,8 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {v4 as uuid} from 'uuid';
+
 // components
 import Message from '../message/message.component'
+import TypingDots from './typing-dots/typing-dots.component'
 
 // sass
 import './chatbot.styles.scss'
@@ -20,7 +22,8 @@ class Chatbot extends React.Component {
         
         this.state = {
             messages: [],
-            hidden: true
+            hidden: true,
+            hideDots: true
         }
 
         if (cookies.get('userId') === undefined) {
@@ -71,7 +74,7 @@ class Chatbot extends React.Component {
         }
         
         allMessages.map(message => {
-            return this.setState({messages: [...this.state.messages, message]})
+            return this.setState({messages: [...this.state.messages, message], hideDots: true})
         })
         
     }
@@ -99,7 +102,7 @@ class Chatbot extends React.Component {
             }
             
             allMessages.map(message => {
-                return this.setState({messages: [...this.state.messages, message]})
+                return this.setState({messages: [...this.state.messages, message], hideDots: true})
             })
         } catch (error) {
             console.log(error)
@@ -134,6 +137,7 @@ class Chatbot extends React.Component {
 
     handleSubmit = async(e) => {
         e.preventDefault()
+        this.setState({hideDots: false})
         let submission = e.target.children[0]
         if (submission.value !== '') {
            this.textQuery(submission.value)
@@ -145,6 +149,7 @@ class Chatbot extends React.Component {
     }
     
     render() {
+        const { messages, hideDots } = this.state
         if (this.state.hidden) {
             return (
                 <div className="hidden-chatbot" onClick={() => this.toggleBot()} >
@@ -170,8 +175,14 @@ class Chatbot extends React.Component {
                     </div>
                         <div className="messages-container">
                         {
-                            this.renderMessages(this.state.messages)
+                            this.renderMessages(messages)
                         }
+                        {
+                           hideDots ?
+                           null :
+                           <TypingDots /> 
+                        }
+                        
                         <div ref={(el) => this.messagesEnd = el}></div>
                     </div>
                 
