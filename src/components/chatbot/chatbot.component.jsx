@@ -46,36 +46,60 @@ class Chatbot extends React.Component {
     }
 
     textQuery = async (text) => {
-        let message = {
-            speaker: 'me',
-            msg: text
-        }
 
-        this.setState({messages: [...this.state.messages, message]})
+        try {
+            let message = {
+                speaker: 'me',
+                msg: text
+            }
 
-        const res = await axios.post('https://the-mrs.herokuapp.com/api/df_text_query', {text, userId: cookies.get('userId')})
-        const allMessages = [];
-        const botMessages = res.data.fulfillmentMessages; 
-        const payloads = res.data.webhookPayload;
-        console.log(payloads);
-        if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
+            this.setState({messages: [...this.state.messages, message]})
+
+            const res = await axios.post('https://the-mrs.herokuapp.com/api/df_text_query', {text, userId: cookies.get('userId')})
+            const allMessages = [];
+            const botMessages = res.data.fulfillmentMessages; 
+            const payloads = res.data.webhookPayload;
+            if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
+                const splitMessages = botMessages[0].text.text[0].split(".", 5)
+                splitMessages.map(splitMessage => {
+                    if (splitMessage.length  > 1) {
+                        let message = {
+                        speaker: 'the MRS',
+                        msg:splitMessage
+                        }
+                        allMessages.push(message)  
+                    }
+                    return allMessages
+                })
+            }
+            if (payloads && payloads.fields && payloads.fields.cards) {
                 let message = {
                     speaker: 'the MRS',
-                    msg:botMessages[0].text.text[0]
+                    cards: payloads.fields.cards.listValue.values
                 }
                 allMessages.push(message)
-        }
-        if (payloads && payloads.fields && payloads.fields.cards) {
-            let message = {
-                speaker: 'the MRS',
-                cards: payloads.fields.cards.listValue.values
             }
-            allMessages.push(message)
+
+            const printMessageswithdelay = async (messageToPrint) => {
+                const messageAmount = allMessages.length 
+                
+                if (messageToPrint === messageAmount) {
+                    this.setState({ hideDots: true })
+                    return
+                } else {
+                    if (messageToPrint !== 0) {
+                        await this.resolveAfterXSeconds(2)
+                    } 
+                    this.setState({ messages: [...this.state.messages, allMessages[messageToPrint]] })
+                    messageToPrint += 1
+                    printMessageswithdelay(messageToPrint)
+                }
+                
+            }
+            printMessageswithdelay(0)
+        } catch (error) {
+            console.log(error)
         }
-        
-        allMessages.map(message => {
-            return this.setState({messages: [...this.state.messages, message], hideDots: true})
-        })
         
     }
 
@@ -85,13 +109,19 @@ class Chatbot extends React.Component {
             const allMessages = []
             const botMessages = res.data.fulfillmentMessages 
             const payloads = res.data.webhookPayload
-            console.log(payloads)
+
             if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
-                    let message = {
-                        speaker: 'the MRS',
-                        msg:botMessages[0].text.text[0]
-                    }
-                    allMessages.push(message)
+                    const splitMessages = botMessages[0].text.text[0].split(".", 5)
+                    splitMessages.map(splitMessage => {
+                        if (splitMessage.length  > 1) {
+                            let message = {
+                            speaker: 'the MRS',
+                            msg:splitMessage
+                            }
+                            allMessages.push(message)  
+                        }
+                        return allMessages
+                    })
             }
             if (payloads && payloads.fields && payloads.fields.cards) {
                 let message = {
@@ -101,9 +131,25 @@ class Chatbot extends React.Component {
                 allMessages.push(message)
             }
             
-            allMessages.map(message => {
-                return this.setState({messages: [...this.state.messages, message], hideDots: true})
-            })
+            this.setState({hideDots: false})
+            const printMessageswithdelay = async (messageToPrint) => {
+                const messageAmount = allMessages.length 
+                
+                if (messageToPrint === messageAmount) {
+                    this.setState({ hideDots: true })
+                    return
+                } else {
+                    if (messageToPrint !== 0) {
+                        await this.resolveAfterXSeconds(2)
+                    } 
+                    this.setState({ messages: [...this.state.messages, allMessages[messageToPrint]] })
+                    messageToPrint += 1
+                    printMessageswithdelay(messageToPrint)
+                }
+                
+            }
+            
+            printMessageswithdelay(0)
         } catch (error) {
             console.log(error)
         }
