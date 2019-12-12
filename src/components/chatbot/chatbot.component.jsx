@@ -59,6 +59,7 @@ class Chatbot extends React.Component {
             const allMessages = [];
             const botMessages = res.data.fulfillmentMessages; 
             const payloads = res.data.webhookPayload;
+            console.log(payloads)
             if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
                 const splitMessages = botMessages[0].text.text[0].split(".", 5)
                 splitMessages.map(splitMessage => {
@@ -76,6 +77,14 @@ class Chatbot extends React.Component {
                 let message = {
                     speaker: 'the MRS',
                     cards: payloads.fields.cards.listValue.values
+                }
+                allMessages.push(message)
+            }
+
+            if (payloads && payloads.fields && payloads.fields.quickReplies) {
+                let message = {
+                    speaker: 'the MRS',
+                    quickReplies: payloads.fields.quickReplies.listValue.values
                 }
                 allMessages.push(message)
             }
@@ -109,7 +118,8 @@ class Chatbot extends React.Component {
             const allMessages = []
             const botMessages = res.data.fulfillmentMessages 
             const payloads = res.data.webhookPayload
-
+            console.log(payloads);
+            
             if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
                     const splitMessages = botMessages[0].text.text[0].split(".", 5)
                     splitMessages.map(splitMessage => {
@@ -123,10 +133,19 @@ class Chatbot extends React.Component {
                         return allMessages
                     })
             }
+            // add card message
             if (payloads && payloads.fields && payloads.fields.cards) {
                 let message = {
                     speaker: 'the MRS',
                     cards: payloads.fields.cards.listValue.values
+                }
+                allMessages.push(message)
+            }
+            // add quick reply message
+            if (payloads && payloads.fields && payloads.fields.quickReplies) {
+                let message = {
+                    speaker: 'the MRS',
+                    quickReplies: payloads.fields.quickReplies.listValue.values
                 }
                 allMessages.push(message)
             }
@@ -145,8 +164,7 @@ class Chatbot extends React.Component {
                     this.setState({ messages: [...this.state.messages, allMessages[messageToPrint]] })
                     messageToPrint += 1
                     printMessageswithdelay(messageToPrint)
-                }
-                
+                }  
             }
             
             printMessageswithdelay(0)
@@ -164,7 +182,7 @@ class Chatbot extends React.Component {
                 } else if (message.cards)  {
                     return <Message key={i} speaker={message.speaker} cards={message.cards} cardStyle/> 
                 } else {
-                    return <Message key={i} speaker={message.speaker} text={message.followUp} quickReplies={message.quickReplies} handleQuickReply={this.handleQuickReply}/> 
+                    return <Message key={i} speaker={message.speaker} quickReplies={message.quickReplies} handleQuickReply={this.handleQuickReply} qRStyle/> 
                 }
                 
             })
@@ -174,7 +192,7 @@ class Chatbot extends React.Component {
     }
 
     handleQuickReply = (text, payload) => {
-        this.textQuery(text);
+        this.textQuery(payload);
     }
 
     toggleBot = () => {
