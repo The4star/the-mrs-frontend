@@ -192,6 +192,7 @@ class Chatbot extends React.Component {
     }
 
     handleQuickReply = (text, payload) => {
+        this.setState({hideDots: false })
         this.textQuery(payload);
     }
 

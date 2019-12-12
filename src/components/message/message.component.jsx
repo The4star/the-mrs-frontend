@@ -45,7 +45,7 @@ const Message = ({ speaker, text, cards, quickReplies, handleQuickReply, cardSty
                                 return <QuickReply
                                     key={i}
                                     text={quickReply.structValue.fields.text.stringValue}
-                                    payload={quickReply.structValue.fields.payload ? quickReply.structValue.fields.payload.stringValue : null}
+                                    payload={quickReply.structValue.fields.payload ?quickReply.structValue.fields.payload.stringValue : null}
                                     link={quickReply.structValue.fields.link ? quickReply.structValue.fields.link.stringValue : null}
                                     reactLink={quickReply.structValue.fields.reactLink ? quickReply.structValue.fields.reactLink.stringValue : null}
                                     handleQuickReply={handleQuickReply}
@@ -60,9 +60,6 @@ const Message = ({ speaker, text, cards, quickReplies, handleQuickReply, cardSty
         {
             speaker === 'me' &&
             <div className="message-container-user">
-                <div className="speaker">
-                    <h3>{speaker}</h3>
-                </div>
                 <div className="message-content">
                     <p>{text}</p>
                 </div>
