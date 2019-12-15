@@ -55,7 +55,7 @@ class Chatbot extends React.Component {
 
             this.setState({messages: [...this.state.messages, message]})
 
-            const res = await axios.post('https://the-mrs.herokuapp.com/api/df_text_query', {text, userId: cookies.get('userId')})
+            const res = await axios.post('https://rp6zb9jyqi.execute-api.us-east-1.amazonaws.com/dev/api/df_text_query', {text, userId: cookies.get('userId')})
             const allMessages = [];
             const botMessages = res.data.fulfillmentMessages; 
             const payloads = res.data.webhookPayload;
@@ -114,7 +114,7 @@ class Chatbot extends React.Component {
 
     eventQuery = async (event) => {
         try {
-            const res = await axios.post('https://the-mrs.herokuapp.com/api/df_event_query', {event, userId: cookies.get('userId')})
+            const res = await axios.post('https://rp6zb9jyqi.execute-api.us-east-1.amazonaws.com/dev/api/df_event_query', {event, userId: cookies.get('userId')})
             const allMessages = []
             const botMessages = res.data.fulfillmentMessages 
             const payloads = res.data.webhookPayload
