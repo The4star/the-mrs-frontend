@@ -38,11 +38,22 @@ class Chatbot extends React.Component {
         })
     }
     componentDidMount = async () => {
-        await this.eventQuery('Welcome')
+        await this.getChatHistory();
     }
 
     componentDidUpdate = () => {
         this.messagesEnd.scrollIntoView({behaviour: 'smooth'})
+    }
+    
+    getChatHistory = async () => {
+      const response = await axios.post('http://localhost:5000/api/df_get_chat_history', {userId: cookies.get('userId')})
+      const data = response.data 
+      console.log(data)
+      if(data.previousSession) {
+        this.setState({messages: [...data.response.messages]})
+      } else {
+        await this.eventQuery('Welcome')
+      }
     }
 
     textQuery = async (text) => {
@@ -55,11 +66,11 @@ class Chatbot extends React.Component {
 
             this.setState({messages: [...this.state.messages, message]})
 
-            const res = await axios.post('https://rp6zb9jyqi.execute-api.us-east-1.amazonaws.com/dev/api/df_text_query', {text, userId: cookies.get('userId')})
+            const res = await axios.post('http://localhost:5000/api/df_text_query', {text, userId: cookies.get('userId')})
             const allMessages = [];
             const botMessages = res.data.fulfillmentMessages; 
             const payloads = res.data.webhookPayload;
-            console.log(payloads)
+  
             if (botMessages && botMessages[0] && botMessages[0].text && botMessages[0].text.text) {
                 const splitMessages = botMessages[0].text.text[0].split(".", 5)
                 splitMessages.map(splitMessage => {
@@ -114,7 +125,7 @@ class Chatbot extends React.Component {
 
     eventQuery = async (event) => {
         try {
-            const res = await axios.post('https://rp6zb9jyqi.execute-api.us-east-1.amazonaws.com/dev/api/df_event_query', {event, userId: cookies.get('userId')})
+            const res = await axios.post('http://localhost:5000/api/df_event_query', {event, userId: cookies.get('userId')})
             const allMessages = []
             const botMessages = res.data.fulfillmentMessages 
             const payloads = res.data.webhookPayload
