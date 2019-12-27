@@ -49,7 +49,7 @@ class Chatbot extends React.Component {
       const response = await axios.post('https://rp6zb9jyqi.execute-api.us-east-1.amazonaws.com/dev/api/df_get_chat_history', {userId: cookies.get('userId')})
       const data = response.data 
 
-      if(data.previousSession) {
+      if(data.previousSession && data.response.messages.length > 0) {
         this.setState({messages: [...data.response.messages]});
       } else {
         await this.eventQuery('Welcome');
